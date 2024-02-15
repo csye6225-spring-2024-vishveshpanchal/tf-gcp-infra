@@ -1,5 +1,5 @@
 variable "gcp_project" {
-    type = number
+    type = string
 }
 
 variable "gcp_region" {
