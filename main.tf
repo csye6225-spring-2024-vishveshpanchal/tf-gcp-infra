@@ -14,7 +14,7 @@ provider "google" {
 }
 
 module "vpc" {
-  source = "./vpc"
+  source = "./vpcC"
   gcp_project = var.gcp_project
   gcp_region = var.gcp_region
   vpc_network = var.vpc_network
