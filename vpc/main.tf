@@ -1,6 +1,6 @@
 
 # Manage a VPC network or legacy network resource on GCP
-resource "google_compute_network" "vpc_network" {
+resource "google_compute_network" "vpc_network" 
     count = length(var.vpc_network)
     name = var.vpc_network[count.index]
     description = "VPC Network for project ${var.gcp_project}"
