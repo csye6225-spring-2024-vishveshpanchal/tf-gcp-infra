@@ -3,7 +3,15 @@ name: Terraform Validation
 on: [pull_request, push]
 
 jobs:
+  fmt-check:
+    runs-on: ubuntu-latest
+    name: Terraform fmt
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
+      - name: Terraform fmt Check
+        run: terraform fmt -check
   validate:
     runs-on: ubuntu-latest
     name: Validating Terraform Templates
