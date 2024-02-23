@@ -2,6 +2,12 @@
 Terraform templates
 
 
+## Updating .tfvars fileprior to running
+* change the image file name with the image that you created with the `webapp` project for the variable `vm_boot_disk_image` as below
+```
+vm_boot_disk_image = "projects/GCP_PROJECT_NAME/global/images/BUILD_MACHINE_IMAGE_NAME"
+```
+
 ## Running and Executing Terraform
 * Inside your terminal, open the directory where your .tf extension files are located and then type the below commands one after the other
 
