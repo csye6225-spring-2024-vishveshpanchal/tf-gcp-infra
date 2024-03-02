@@ -2,6 +2,13 @@
 Terraform templates
 
 
+## API Enabling
+* Enabling `Service Networking API` to setup `private services access` in my VPC.
+```
+gcloud services enable servicenetworking.googleapis.com \
+    --project=PROJECT_ID
+```
+
 ## Updating .tfvars fileprior to running
 * change the image file name with the image that you created with the `webapp` project for the variable `vm_boot_disk_image` as below
 ```

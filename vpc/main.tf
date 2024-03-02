@@ -48,3 +48,40 @@ resource "google_compute_firewall" "webapp_firewall" {
   target_tags   = [var.subnet_webapp_firewall_target_tags]
   source_ranges = [var.subnet_webapp_firewall_source_ranges]
 }
+
+resource "google_compute_firewall" "allow_db" {
+  name    = var.allow_db_firewall
+  network = google_compute_network.vpc_network.id
+  allow {
+    protocol = var.allow_db_protocol
+    ports    = var.allow_db_ports
+  }
+
+  direction          = var.allow_db_direction
+  target_tags        = [var.subnet_webapp_firewall_target_tags]
+  destination_ranges = [var.subnet_db_ip_cidr]
+}
+
+resource "google_compute_firewall" "block_ingress" {
+  name    = var.block_ingress_firewall
+  network = google_compute_network.vpc_network.id
+  deny {
+    protocol = var.block_ingress_protocol
+  }
+
+  priority      = var.block_ingress_priority
+  direction     = var.block_ingress_direction
+  source_ranges = var.block_ingress_source_ranges
+}
+
+resource "google_compute_firewall" "block_egress" {
+  name    = var.block_egress_firewall
+  network = google_compute_network.vpc_network.id
+  deny {
+    protocol = var.block_egress_protocol
+  }
+
+  priority      = var.block_egress_priority
+  direction     = var.block_egress_direction
+  source_ranges = [var.subnet_webapp_ip_cidr]
+}
