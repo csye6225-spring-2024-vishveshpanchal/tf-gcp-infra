@@ -58,8 +58,8 @@ variable "subnet_webapp_firewall_protocol" {
   type = string
 }
 
-variable "subnet_webapp_firewall_port" {
-  type = string
+variable "subnet_webapp_firewall_ports" {
+  type = list(string)
 }
 
 variable "subnet_webapp_firewall_direction" {
@@ -67,11 +67,11 @@ variable "subnet_webapp_firewall_direction" {
 }
 
 variable "subnet_webapp_firewall_target_tags" {
-  type = string
+  type = list(string)
 }
 
 variable "subnet_webapp_firewall_source_ranges" {
-  type = string
+  type = list(string)
 }
 
 variable "vm_name" {

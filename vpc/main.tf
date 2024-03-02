@@ -15,7 +15,6 @@ resource "google_compute_subnetwork" "vpc_subnetworks_webapp" {
   ip_cidr_range = var.subnet_webapp_ip_cidr
   network       = google_compute_network.vpc_network.id
   description   = "Subnet: vpc_subnetworks for webapp"
-  # description = "Subnet: ${google_compute_subnetwork.vpc_subnetworks_webapp.name} within  VPC network: ${google_compute_network.vpc_network.name}"
 }
 
 # db subnet
@@ -24,7 +23,6 @@ resource "google_compute_subnetwork" "vpc_subnetworks_db" {
   ip_cidr_range = var.subnet_db_ip_cidr
   network       = google_compute_network.vpc_network.id
   description   = "Subnet: vpc_subnetworks for db"
-  # description = "Subnet: ${google_compute_subnetwork.vpc_subnetworks_db.name} within  VPC network: ${google_compute_network.vpc_network.name}"
 }
 
 # Route to 0.0.0.0/0 for the webapp subnet
@@ -42,11 +40,11 @@ resource "google_compute_firewall" "webapp_firewall" {
   network = google_compute_network.vpc_network.id
   allow {
     protocol = var.subnet_webapp_firewall_protocol
-    ports    = [var.subnet_webapp_firewall_port]
+    ports    = var.subnet_webapp_firewall_ports
   }
   direction     = var.subnet_webapp_firewall_direction
-  target_tags   = [var.subnet_webapp_firewall_target_tags]
-  source_ranges = [var.subnet_webapp_firewall_source_ranges]
+  target_tags   = var.subnet_webapp_firewall_target_tags
+  source_ranges = var.subnet_webapp_firewall_source_ranges
 }
 
 resource "google_compute_firewall" "allow_db" {
@@ -58,7 +56,7 @@ resource "google_compute_firewall" "allow_db" {
   }
 
   direction          = var.allow_db_direction
-  target_tags        = [var.subnet_webapp_firewall_target_tags]
+  target_tags        = var.subnet_webapp_firewall_target_tags
   destination_ranges = [var.subnet_db_ip_cidr]
 }
 
