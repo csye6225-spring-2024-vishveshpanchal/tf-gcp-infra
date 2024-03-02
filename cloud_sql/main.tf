@@ -1,5 +1,7 @@
-resource "random_id" "password_generate" {
-  byte_length = 6
+resource "random_password" "password_generate" {
+  length           = 9
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
 resource "google_sql_database_instance" "sql_db_instance" {
@@ -18,7 +20,6 @@ resource "google_sql_database_instance" "sql_db_instance" {
       psc_config {
         psc_enabled               = var.sql_psc_enabled
         allowed_consumer_projects = [var.sql_allowed_consumer_projects]
-        # private_network = 
       }
       ipv4_enabled = var.sql_ipv4_enabled
     }
@@ -59,5 +60,5 @@ resource "google_sql_database" "sql_database" {
 resource "google_sql_user" "sql_users" {
   name     = var.sql_username
   instance = google_sql_database_instance.sql_db_instance.name
-  password = random_id.password_generate.hex
+  password = random_password.password_generate.result
 }
