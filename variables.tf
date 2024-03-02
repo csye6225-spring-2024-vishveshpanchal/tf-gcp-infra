@@ -105,3 +105,127 @@ variable "vm_network_tier" {
 variable "vm_stack_type" {
   type = string
 }
+
+variable "vm_boot_disk_auto_delete" {
+  type = bool
+}
+
+variable "webapp_env_NODE_ENV" {
+  type = string
+}
+
+variable "webapp_env_PORT" {
+  type = number
+}
+
+variable "webapp_env_DB_PORT_PROD" {
+  type = number
+}
+
+variable "sql_db_version" {
+  type = string
+}
+
+variable "sql_tier" {
+  type = string
+}
+
+variable "sql_availability_type" {
+  type = string
+}
+
+variable "sql_backup_enabled" {
+  type = bool
+}
+
+variable "sql_backup_binary_log_enabled" {
+  type = bool
+}
+
+variable "sql_psc_enabled" {
+  type = bool
+}
+
+variable "sql_ipv4_enabled" {
+  type = bool
+}
+
+variable "sql_deletion_protection" {
+  type = bool
+}
+
+variable "sql_disk_type" {
+  type = string
+}
+
+variable "sql_disk_size" {
+  type = number
+}
+
+variable "sql_database_name" {
+  type = string
+}
+
+variable "sql_username" {
+  type = string
+}
+
+variable "sql_reserved_address" {
+  type = string
+}
+
+variable "sql_address_type" {
+  type = string
+}
+
+variable "allow_db_firewall" {
+  type = string
+}
+
+variable "allow_db_protocol" {
+  type = string
+}
+
+variable "allow_db_ports" {
+  type = list(string)
+}
+
+variable "allow_db_direction" {
+  type = string
+}
+
+variable "block_ingress_firewall" {
+  type = string
+}
+
+variable "block_ingress_protocol" {
+  type = string
+}
+
+variable "block_ingress_priority" {
+  type = number
+}
+
+variable "block_ingress_direction" {
+  type = string
+}
+
+variable "block_ingress_source_ranges" {
+  type = list(string)
+}
+
+variable "block_egress_firewall" {
+  type = string
+}
+
+variable "block_egress_protocol" {
+  type = string
+}
+
+variable "block_egress_priority" {
+  type = number
+}
+
+variable "block_egress_direction" {
+  type = string
+}

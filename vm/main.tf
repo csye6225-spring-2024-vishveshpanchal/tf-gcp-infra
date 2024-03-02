@@ -5,6 +5,7 @@ resource "google_compute_instance" "vm" {
   tags         = var.vm_tags
 
   boot_disk {
+    auto_delete = var.vm_boot_disk_auto_delete
     device_name = var.vm_name
 
     initialize_params {
@@ -13,6 +14,39 @@ resource "google_compute_instance" "vm" {
       type  = var.vm_boot_disk_type
     }
   }
+
+  metadata_startup_script = <<-EOT
+    #!/bin/bash
+    touch /tmp/.env
+    echo "NODE_ENV=${var.webapp_env_NODE_ENV}" >> /tmp/.env
+    echo "PORT=${var.webapp_env_PORT}" >> /tmp/.env
+    echo "DB_PORT_PROD=${var.webapp_env_DB_PORT_PROD}" >> /tmp/.env
+    echo "DB_HOST_PROD=${var.webapp_env_DB_HOST_PROD}" >> /tmp/.env
+    echo "DB_USERNAME_PROD=${var.webapp_env_DB_USERNAME_PROD}" >> /tmp/.env
+    echo "DB_PASSWORD_PROD=${var.webapp_env_DB_PASSWORD_PROD}" >> /tmp/.env
+    echo "DB_NAME_PROD=${var.webapp_env_DB_NAME_PROD}" >> /tmp/.env
+    mv /tmp/.env /opt/csye6225/app/.env
+    chown -R csye6225:csye6225 /opt/csye6225/app
+    sudo systemctl start csye6225.service
+  EOT
+  # chmod -R 764 /opt/csye6225/app
+  # metadata = {
+  #   startup-script = <<-EOT
+  #     #!/bin/bash
+  #     set -e
+  #     touch /tmp/.env
+  #     echo "NODE_ENV=${var.webapp_env_NODE_ENV}" >> /tmp/.env
+  #     echo "PORT=${var.webapp_env_PORT}" >> /tmp/.env
+  #     echo "DB_PORT_PROD=${var.webapp_env_DB_PORT_PROD}" >> /tmp/.env
+  #     echo "DB_HOST_PROD=${var.webapp_env_DB_HOST_PROD}" >> /tmp/.env
+  #     echo "DB_USERNAME_PROD=${var.webapp_env_DB_USERNAME_PROD}" >> /tmp/.env
+  #     echo "DB_PASSWORD_PROD=${var.webapp_env_DB_PASSWORD_PROD}" >> /tmp/.env
+  #     echo "DB_NAME_PROD=${var.webapp_env_DB_NAME_PROD}" >> /tmp/.env
+  #     mv /tmp/.env /home/csye6225/app/.env
+  #     chown -R csye6225:csye6225 /home/csye6225/app
+  #     chmod -R 764 /home/csye6225/app
+  #   EOT
+  # }
 
   network_interface {
     access_config {

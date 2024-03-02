@@ -37,3 +37,35 @@ variable "vm_subnetwork" {
 variable "vm_stack_type" {
   type = string
 }
+
+variable "vm_boot_disk_auto_delete" {
+  type = bool
+}
+
+variable "webapp_env_NODE_ENV" {
+  type = string
+}
+
+variable "webapp_env_PORT" {
+  type = number
+}
+
+variable "webapp_env_DB_PORT_PROD" {
+  type = number
+}
+
+variable "webapp_env_DB_USERNAME_PROD" {
+  type = string
+}
+
+variable "webapp_env_DB_PASSWORD_PROD" {
+  type = string
+}
+
+variable "webapp_env_DB_NAME_PROD" {
+  type = string
+}
+
+variable "webapp_env_DB_HOST_PROD" {
+  type = string
+}

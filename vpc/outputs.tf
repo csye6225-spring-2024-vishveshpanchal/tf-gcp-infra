@@ -13,3 +13,7 @@ output "vpc_subnetworks_webapp_id" {
 output "vpc_subnetworks_webapp_firewall_tags" {
   value = google_compute_firewall.webapp_firewall.target_tags
 }
+
+output "vpc_network_name" {
+  value = google_compute_network.vpc_network.name
+}

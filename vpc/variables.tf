@@ -73,3 +73,55 @@ variable "subnet_webapp_firewall_target_tags" {
 variable "subnet_webapp_firewall_source_ranges" {
   type = string
 }
+
+variable "allow_db_firewall" {
+  type = string
+}
+
+variable "allow_db_protocol" {
+  type = string
+}
+
+variable "allow_db_ports" {
+  type = list(string)
+}
+
+variable "allow_db_direction" {
+  type = string
+}
+
+variable "block_ingress_firewall" {
+  type = string
+}
+
+variable "block_ingress_protocol" {
+  type = string
+}
+
+variable "block_ingress_priority" {
+  type = number
+}
+
+variable "block_ingress_direction" {
+  type = string
+}
+
+variable "block_ingress_source_ranges" {
+  type = list(string)
+}
+
+variable "block_egress_firewall" {
+  type = string
+}
+
+variable "block_egress_protocol" {
+  type = string
+}
+
+variable "block_egress_priority" {
+  type = number
+}
+
+variable "block_egress_direction" {
+  type = string
+}
