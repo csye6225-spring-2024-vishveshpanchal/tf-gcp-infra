@@ -30,7 +30,7 @@ module "vpc" {
   subnet_db_ip_cidr                    = var.subnet_db_ip_cidr
   subnet_webapp_firewall_name          = var.subnet_webapp_firewall_name
   subnet_webapp_firewall_protocol      = var.subnet_webapp_firewall_protocol
-  subnet_webapp_firewall_port          = var.subnet_webapp_firewall_port
+  subnet_webapp_firewall_ports         = var.subnet_webapp_firewall_ports
   subnet_webapp_firewall_direction     = var.subnet_webapp_firewall_direction
   subnet_webapp_firewall_target_tags   = var.subnet_webapp_firewall_target_tags
   subnet_webapp_firewall_source_ranges = var.subnet_webapp_firewall_source_ranges
