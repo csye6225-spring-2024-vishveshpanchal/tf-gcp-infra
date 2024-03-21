@@ -56,4 +56,10 @@ resource "google_compute_instance" "vm" {
     subnetwork = var.vm_subnetwork
     stack_type = var.vm_stack_type
   }
+
+  service_account {
+    email  = var.service_account_email
+    scopes = var.service_account_scopes
+  }
+  allow_stopping_for_update = true
 }

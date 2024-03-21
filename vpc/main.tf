@@ -72,14 +72,14 @@ resource "google_compute_firewall" "block_ingress" {
   source_ranges = var.block_ingress_source_ranges
 }
 
-resource "google_compute_firewall" "block_egress" {
-  name    = var.block_egress_firewall
-  network = google_compute_network.vpc_network.id
-  deny {
-    protocol = var.block_egress_protocol
-  }
+# resource "google_compute_firewall" "block_egress" {
+#   name    = var.block_egress_firewall
+#   network = google_compute_network.vpc_network.id
+#   deny {
+#     protocol = var.block_egress_protocol
+#   }
 
-  priority      = var.block_egress_priority
-  direction     = var.block_egress_direction
-  source_ranges = [var.subnet_webapp_ip_cidr]
-}
+#   priority      = var.block_egress_priority
+#   direction     = var.block_egress_direction
+#   source_ranges = [var.subnet_webapp_ip_cidr]
+# }
