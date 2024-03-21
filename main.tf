@@ -69,6 +69,8 @@ module "vm" {
   webapp_env_DB_PASSWORD_PROD = module.cloud_sql.webapp_env_DB_PASSWORD_PROD
   webapp_env_DB_NAME_PROD     = module.cloud_sql.webapp_env_DB_NAME_PROD
   webapp_env_DB_HOST_PROD     = module.cloud_sql.webapp_env_DB_HOST_PROD
+  service_account_email       = module.logging.service_account_email
+  service_account_scopes      = var.service_account_scopes
 }
 
 module "cloud_sql" {
@@ -90,4 +92,22 @@ module "cloud_sql" {
   sql_username                  = var.sql_username
   sql_reserved_address          = var.sql_reserved_address
   sql_address_type              = var.sql_address_type
+}
+
+module "dns" {
+  source         = "./dns"
+  dns_zone_name  = var.dns_zone_name
+  a_record_name  = var.a_record_name
+  a_record_type  = var.a_record_type
+  a_record_ttl   = var.a_record_ttl
+  vm_external_ip = module.vm.vm_external_ip
+}
+
+module "logging" {
+  source                                                   = "./logging"
+  gcp_project                                              = var.gcp_project
+  google_service_account_account_id                        = var.google_service_account_account_id
+  google_service_account_display_name                      = var.google_service_account_display_name
+  google_project_iam_binding_logging_admin_role            = var.google_project_iam_binding_logging_admin_role
+  google_project_iam_binding_monitoring_metric_writer_role = var.google_project_iam_binding_monitoring_metric_writer_role
 }

@@ -69,3 +69,11 @@ variable "webapp_env_DB_NAME_PROD" {
 variable "webapp_env_DB_HOST_PROD" {
   type = string
 }
+
+variable "service_account_email" {
+  type = string
+}
+
+variable "service_account_scopes" {
+  type = list(string)
+}
