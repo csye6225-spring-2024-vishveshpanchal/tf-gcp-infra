@@ -25,6 +25,8 @@ resource "google_compute_instance" "vm" {
     echo "DB_USERNAME_PROD=${var.webapp_env_DB_USERNAME_PROD}" >> /tmp/.env
     echo "DB_PASSWORD_PROD=${var.webapp_env_DB_PASSWORD_PROD}" >> /tmp/.env
     echo "DB_NAME_PROD=${var.webapp_env_DB_NAME_PROD}" >> /tmp/.env
+    echo "GCP_PROJECT_ID=${var.webapp_env_GCP_PROJECT_ID}" >> /tmp/.env
+    echo "GCP_PUBSUB_TOPIC_ID=${var.webapp_env_GCP_PUBSUB_TOPIC_ID}" >> /tmp/.env
     mv /tmp/.env /opt/csye6225/app/.env
     chown -R csye6225:csye6225 /opt/csye6225/app
     sudo systemctl start csye6225.service

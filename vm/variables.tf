@@ -77,3 +77,11 @@ variable "service_account_email" {
 variable "service_account_scopes" {
   type = list(string)
 }
+
+variable "webapp_env_GCP_PROJECT_ID" {
+  type = string
+}
+
+variable "webapp_env_GCP_PUBSUB_TOPIC_ID" {
+  type = string
+}

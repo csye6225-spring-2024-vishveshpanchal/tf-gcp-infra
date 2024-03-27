@@ -1,6 +1,7 @@
 # Vishvesh additional ignores
 *.lock.hcl
 assignment6.txt
+assignment7.txt
 
 # Local .terraform directories
 **/.terraform/*
