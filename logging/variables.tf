@@ -17,3 +17,7 @@ variable "google_project_iam_binding_logging_admin_role" {
 variable "google_project_iam_binding_monitoring_metric_writer_role" {
   type = string
 }
+
+variable "google_project_iam_binding_pubsub_publisher" {
+  type = string
+}

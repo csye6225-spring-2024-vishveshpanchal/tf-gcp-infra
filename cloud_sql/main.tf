@@ -39,6 +39,7 @@ resource "google_compute_address" "default" {
 data "google_sql_database_instance" "sql_db_instance" {
   name = google_sql_database_instance.sql_db_instance.name
   # name = resource.google_sql_database_instance.default.name
+  depends_on = [ google_sql_database.sql_database ]
 }
 
 resource "google_compute_forwarding_rule" "default" {
@@ -50,6 +51,7 @@ resource "google_compute_forwarding_rule" "default" {
   ip_address            = google_compute_address.default.self_link
   load_balancing_scheme = ""
   target                = data.google_sql_database_instance.sql_db_instance.psc_service_attachment_link
+  depends_on = [ google_sql_database.sql_database ]
 }
 
 resource "google_sql_database" "sql_database" {
