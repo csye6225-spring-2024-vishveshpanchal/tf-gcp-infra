@@ -14,6 +14,10 @@ variable "a_record_ttl" {
   type = number
 }
 
-variable "vm_external_ip" {
+# variable "vm_external_ip" {
+#   type = string
+# }
+
+variable "lb_external_ip_address" {
   type = string
 }

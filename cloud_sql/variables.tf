@@ -65,3 +65,11 @@ variable "sql_reserved_address" {
 variable "sql_address_type" {
   type = string
 }
+
+variable "sql_fw_rule_name" {
+  type = string
+}
+
+variable "sql_compute_address_name" {
+  type = string
+}

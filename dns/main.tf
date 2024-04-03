@@ -8,6 +8,7 @@ resource "google_dns_record_set" "a_record" {
   type         = var.a_record_type
   ttl          = var.a_record_ttl
 
-  rrdatas = [var.vm_external_ip]
+  # rrdatas = [var.vm_external_ip]
+  rrdatas = [var.lb_external_ip_address]
 }
 
