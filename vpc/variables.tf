@@ -125,3 +125,99 @@ variable "block_egress_priority" {
 variable "block_egress_direction" {
   type = string
 }
+
+variable "subnet_proxy_only_name" {
+  type = string
+}
+
+variable "subnet_proxy_only_ip_cidr_range" {
+  type = string
+}
+
+variable "subnet_proxy_only_purpose" {
+  type = string
+}
+
+variable "subnet_proxy_only_region" {
+  type = string
+}
+
+variable "subnet_proxy_only_role" {
+  type = string
+}
+
+variable "fw_allow_health_probes_name" {
+  type = string
+}
+
+variable "fw_allow_health_probes_allow_ports" {
+  type = list(string)
+}
+
+variable "fw_allow_health_probes_allow_protocol" {
+  type = string
+}
+
+variable "fw_allow_health_probes_direction" {
+  type = string
+}
+
+variable "fw_allow_health_probes_priority" {
+  type = string
+}
+
+variable "fw_allow_health_probes_source_ranges" {
+  type = list(string)
+}
+
+variable "fw_allow_health_probes_target_tags" {
+  type = list(string)
+}
+
+variable "fw_allow_proxy_name" {
+  type = string
+}
+
+variable "fw_allow_proxy_ports" {
+  type = list(string)
+}
+
+variable "fw_allow_proxy_protocol" {
+  type = string
+}
+
+variable "fw_allow_proxy_direction" {
+  type = string
+}
+
+variable "fw_allow_proxy_allow_priority" {
+  type = string
+}
+
+variable "fw_allow_proxy_target_tags" {
+  type = list(string)
+}
+
+variable "fw_allow_gfe_name" {
+  type = string
+}
+
+variable "fw_allow_gfe_allow_ports" {
+  type = list(string)
+}
+
+variable "fw_allow_gfe_allow_protocol" {
+  type = string
+}
+
+variable "fw_allow_gfe_direction" {
+  type = string
+}
+
+variable "fw_allow_gfe_source_ranges" {
+  type = list(string)
+}
+
+variable "fw_allow_gfe_target_tags" {
+  type = list(string)
+}

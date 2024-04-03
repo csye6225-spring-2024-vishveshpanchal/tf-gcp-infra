@@ -29,7 +29,7 @@ resource "google_sql_database_instance" "sql_db_instance" {
 
 resource "google_compute_address" "default" {
   #   name = "psc-compute-address-${google_sql_database_instance.sql_db_instance.name}"
-  name = "google-compute-address-vap"
+  name = var.sql_compute_address_name
   #   region       = "us-central1"
   address_type = var.sql_address_type
   subnetwork   = var.vpc_subnet_db_name   # "default"     # Replace value with the name of the subnet here.
@@ -39,19 +39,19 @@ resource "google_compute_address" "default" {
 data "google_sql_database_instance" "sql_db_instance" {
   name = google_sql_database_instance.sql_db_instance.name
   # name = resource.google_sql_database_instance.default.name
-  depends_on = [ google_sql_database.sql_database ]
+  depends_on = [google_sql_database.sql_database]
 }
 
 resource "google_compute_forwarding_rule" "default" {
   #   name                  = "psc-forwarding-rule-${google_sql_database_instance.default.name}"
   #   name = "psc-forwarding-rule-${google_sql_database_instance.sql_db_instance.name}"
-  name = "google-compute-forwarding-rule-vap"
+  name = var.sql_fw_rule_name
   #   region                = "us-central1"
   network               = var.vpc_network_name # "default"
   ip_address            = google_compute_address.default.self_link
   load_balancing_scheme = ""
   target                = data.google_sql_database_instance.sql_db_instance.psc_service_attachment_link
-  depends_on = [ google_sql_database.sql_database ]
+  depends_on            = [google_sql_database.sql_database]
 }
 
 resource "google_sql_database" "sql_database" {

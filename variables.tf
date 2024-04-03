@@ -437,3 +437,303 @@ variable "send_verification_email_cloud_function_trigger_region" {
 variable "send_verification_email_cloud_function_retry_policy" {
   type = string
 }
+
+variable "instance_template_region" {
+  type = string
+}
+
+variable "global_address_name" {
+  type = string
+}
+
+variable "health_check_name" {
+  type = string
+}
+
+variable "health_check_check_interval_sec" {
+  type = string
+}
+
+variable "health_check_healthy_threshold" {
+  type = string
+}
+
+variable "health_check_timeout_sec" {
+  type = string
+}
+
+variable "health_check_unhealthy_threshold" {
+  type = string
+}
+
+variable "health_check_http_host" {
+  type = string
+}
+
+variable "health_check_http_port" {
+  type = string
+}
+
+variable "health_check_http_request_path" {
+  type = string
+}
+
+variable "health_check_log_config_enable" {
+  type = string
+}
+
+variable "g_fw_rule_name" {
+  type = string
+}
+
+variable "g_fw_rule_ip_protocol" {
+  type = string
+}
+
+variable "g_fw_rule_load_balancing_scheme" {
+  type = string
+}
+
+variable "g_fw_rule_port_range" {
+  type = string
+}
+
+variable "target_https_proxy_name" {
+  type = string
+}
+
+variable "url_map_name" {
+  type = string
+}
+
+variable "bkend_service_name" {
+  type = string
+}
+
+variable "bkend_service_protocol" {
+  type = string
+}
+
+variable "bkend_service_port_name" {
+  type = string
+}
+
+variable "bkend_service_load_balancing_scheme" {
+  type = string
+}
+
+variable "bkend_service_timeout_sec" {
+  type = string
+}
+
+variable "bkend_service_backend_balancing_mode" {
+  type = string
+}
+
+variable "bkend_service_backend_capacity_scaler" {
+  type = string
+}
+
+variable "bkend_service_log_config_enable" {
+  type = string
+}
+
+variable "bkend_service_log_config_sample_rate" {
+  type = string
+}
+
+variable "bkend_service_session_affinity" {
+  type = string
+}
+
+variable "bkend_service_affinity_cookie_ttl_sec" {
+  type = string
+}
+
+variable "reg_autoscaler_name" {
+  type = string
+}
+
+variable "reg_autoscaler_region" {
+  type = string
+}
+
+variable "reg_autoscaler_policy_max_replicas" {
+  type = string
+}
+
+variable "reg_autoscaler_policy_min_replicas" {
+  type = string
+}
+
+variable "reg_autoscaler_policy_cooldown_period" {
+  type = string
+}
+
+variable "reg_autoscaler_policy_target" {
+  type = string
+}
+
+variable "sql_fw_rule_name" {
+  type = string
+}
+
+variable "sql_compute_address_name" {
+  type = string
+}
+
+variable "reg_igm_name" {
+  type = string
+}
+
+variable "reg_igm_region" {
+  type = string
+}
+
+variable "reg_igm_named_port_name" {
+  type = string
+}
+
+variable "reg_igm_named_port_port" {
+  type = string
+}
+
+variable "reg_igm_version_name" {
+  type = string
+}
+
+variable "reg_igm_base_instance_name" {
+  type = string
+}
+
+variable "reg_igm_autohealing_initial_delay_sec" {
+  type = string
+}
+
+variable "instance_template_name" {
+  type = string
+}
+
+variable "instance_template_machine_type" {
+  type = string
+}
+
+variable "instance_template_disk_auto_delete" {
+  type = string
+}
+
+variable "instance_template_disk_boot" {
+  type = string
+}
+
+variable "instance_template_disk_mode" {
+  type = string
+}
+
+variable "instance_template_disk_source_image" {
+  type = string
+}
+
+variable "instance_template_disk_disk_type" {
+  type = string
+}
+
+variable "instance_template_disk_disk_size_gb" {
+  type = string
+}
+
+variable "instance_template_disk_type" {
+  type = string
+}
+
+variable "instance_template_network_tier" {
+  type = string
+}
+
+variable "ssl_certi_name" {
+  type = string
+}
+
+variable "subnet_proxy_only_name" {
+  type = string
+}
+
+variable "subnet_proxy_only_ip_cidr_range" {
+  type = string
+}
+
+variable "subnet_proxy_only_purpose" {
+  type = string
+}
+
+variable "subnet_proxy_only_region" {
+  type = string
+}
+
+variable "subnet_proxy_only_role" {
+  type = string
+}
+
+variable "fw_allow_health_probes_name" {
+  type = string
+}
+
+variable "fw_allow_health_probes_allow_ports" {
+  type = list(string)
+}
+
+variable "fw_allow_health_probes_allow_protocol" {
+  type = string
+}
+
+variable "fw_allow_health_probes_direction" {
+  type = string
+}
+
+variable "fw_allow_health_probes_priority" {
+  type = string
+}
+
+variable "fw_allow_health_probes_source_ranges" {
+  type = list(string)
+}
+
+variable "fw_allow_proxy_name" {
+  type = string
+}
+
+variable "fw_allow_proxy_ports" {
+  type = list(string)
+}
+
+variable "fw_allow_proxy_protocol" {
+  type = string
+}
+
+variable "fw_allow_proxy_direction" {
+  type = string
+}
+
+variable "fw_allow_proxy_allow_priority" {
+  type = string
+}
+
+variable "fw_allow_gfe_name" {
+  type = string
+}
+
+variable "fw_allow_gfe_allow_ports" {
+  type = list(string)
+}
+
+variable "fw_allow_gfe_allow_protocol" {
+  type = string
+}
+
+variable "fw_allow_gfe_direction" {
+  type = string
+}
+
+variable "fw_allow_gfe_source_ranges" {
+  type = list(string)
+}

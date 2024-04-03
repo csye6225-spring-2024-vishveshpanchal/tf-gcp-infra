@@ -47,6 +47,31 @@ module "vpc" {
   block_egress_protocol                = var.block_egress_protocol
   block_egress_priority                = var.block_egress_priority
   block_egress_direction               = var.block_egress_direction
+  # contd. vpc - for assignment 8
+  subnet_proxy_only_name                = var.subnet_proxy_only_name
+  subnet_proxy_only_ip_cidr_range       = var.subnet_proxy_only_ip_cidr_range
+  subnet_proxy_only_purpose             = var.subnet_proxy_only_purpose
+  subnet_proxy_only_region              = var.subnet_proxy_only_region
+  subnet_proxy_only_role                = var.subnet_proxy_only_role
+  fw_allow_health_probes_name           = var.fw_allow_health_probes_name
+  fw_allow_health_probes_allow_ports    = var.fw_allow_health_probes_allow_ports
+  fw_allow_health_probes_allow_protocol = var.fw_allow_health_probes_allow_protocol
+  fw_allow_health_probes_direction      = var.fw_allow_health_probes_direction
+  fw_allow_health_probes_priority       = var.fw_allow_health_probes_priority
+  fw_allow_health_probes_source_ranges  = var.fw_allow_health_probes_source_ranges
+  fw_allow_health_probes_target_tags    = var.subnet_webapp_firewall_target_tags
+  fw_allow_proxy_name                   = var.fw_allow_proxy_name
+  fw_allow_proxy_ports                  = var.fw_allow_proxy_ports
+  fw_allow_proxy_protocol               = var.fw_allow_proxy_protocol
+  fw_allow_proxy_direction              = var.fw_allow_proxy_direction
+  fw_allow_proxy_allow_priority         = var.fw_allow_proxy_allow_priority
+  fw_allow_proxy_target_tags            = var.subnet_webapp_firewall_target_tags
+  fw_allow_gfe_name                     = var.fw_allow_gfe_name
+  fw_allow_gfe_allow_ports              = var.fw_allow_gfe_allow_ports
+  fw_allow_gfe_allow_protocol           = var.fw_allow_gfe_allow_protocol
+  fw_allow_gfe_direction                = var.fw_allow_gfe_direction
+  fw_allow_gfe_source_ranges            = var.fw_allow_gfe_source_ranges
+  fw_allow_gfe_target_tags              = var.subnet_webapp_firewall_target_tags
 }
 
 module "vm" {
@@ -94,15 +119,18 @@ module "cloud_sql" {
   sql_username                  = var.sql_username
   sql_reserved_address          = var.sql_reserved_address
   sql_address_type              = var.sql_address_type
+  sql_fw_rule_name              = var.sql_fw_rule_name
+  sql_compute_address_name      = var.sql_compute_address_name
 }
 
 module "dns" {
-  source         = "./dns"
-  dns_zone_name  = var.dns_zone_name
-  a_record_name  = var.a_record_name
-  a_record_type  = var.a_record_type
-  a_record_ttl   = var.a_record_ttl
-  vm_external_ip = module.vm.vm_external_ip
+  source        = "./dns"
+  dns_zone_name = var.dns_zone_name
+  a_record_name = var.a_record_name
+  a_record_type = var.a_record_type
+  a_record_ttl  = var.a_record_ttl
+  # vm_external_ip = module.vm.vm_external_ip
+  lb_external_ip_address = module.app_load_balancer.lb_external_ip_address
 }
 
 module "logging" {
@@ -175,4 +203,105 @@ module "cloud_functions" {
   send_verification_email_cloud_function_available_cpu                                = var.send_verification_email_cloud_function_available_cpu
   send_verification_email_cloud_function_trigger_region                               = var.send_verification_email_cloud_function_trigger_region
   send_verification_email_cloud_function_retry_policy                                 = var.send_verification_email_cloud_function_retry_policy
+}
+
+module "instance_template" {
+  source                              = "./instance_template"
+  instance_template_region            = var.instance_template_region
+  webapp_env_NODE_ENV                 = var.webapp_env_NODE_ENV
+  webapp_env_PORT                     = var.webapp_env_PORT
+  webapp_env_DB_PORT_PROD             = var.webapp_env_DB_PORT_PROD
+  webapp_env_DB_USERNAME_PROD         = module.cloud_sql.webapp_env_DB_USERNAME_PROD
+  webapp_env_DB_PASSWORD_PROD         = module.cloud_sql.webapp_env_DB_PASSWORD_PROD
+  webapp_env_DB_NAME_PROD             = module.cloud_sql.webapp_env_DB_NAME_PROD
+  webapp_env_DB_HOST_PROD             = module.cloud_sql.webapp_env_DB_HOST_PROD
+  webapp_env_GCP_PROJECT_ID           = var.gcp_project
+  webapp_env_GCP_PUBSUB_TOPIC_ID      = module.pubsub.pubsub_topic_verify_email
+  vpc_network_id                      = module.vpc.vpc_network_id
+  vpc_subnetworks_webapp_id           = module.vpc.vpc_subnetworks_webapp_id
+  service_account_email               = module.logging.service_account_email
+  service_account_scopes              = var.service_account_scopes
+  instance_template_name              = var.instance_template_name
+  instance_template_machine_type      = var.instance_template_machine_type
+  instance_template_disk_auto_delete  = var.instance_template_disk_auto_delete
+  instance_template_disk_boot         = var.instance_template_disk_boot
+  instance_template_disk_mode         = var.instance_template_disk_mode
+  instance_template_disk_source_image = var.instance_template_disk_source_image
+  instance_template_disk_disk_type    = var.instance_template_disk_disk_type
+  instance_template_disk_disk_size_gb = var.instance_template_disk_disk_size_gb
+  instance_template_disk_type         = var.instance_template_disk_type
+  instance_template_network_tier      = var.instance_template_network_tier
+  instance_template_tags              = var.subnet_webapp_firewall_target_tags
+}
+
+module "instance_group_manager" {
+  source                                = "./instance_group_manager"
+  instance_template_webapp_id           = module.instance_template.instance_template_webapp_id
+  health_check_id                       = module.app_load_balancer.health_check_id
+  reg_igm_autohealing_initial_delay_sec = var.reg_igm_autohealing_initial_delay_sec
+  reg_igm_base_instance_name            = var.reg_igm_base_instance_name
+  reg_igm_name                          = var.reg_igm_name
+  reg_igm_named_port_name               = var.reg_igm_named_port_name
+  reg_igm_named_port_port               = var.reg_igm_named_port_port
+  reg_igm_region                        = var.reg_igm_region
+  reg_igm_version_name                  = var.reg_igm_version_name
+}
+
+module "app_load_balancer" {
+  source                                = "./app_load_balancer"
+  instance_group_manager_instance_group = module.instance_group_manager.instance_group_manager_instance_group
+  webapp_ssl_cert                       = module.ssl.webapp_ssl_cert
+  webapp_ssl_cert_name                  = module.ssl.webapp_ssl_cert_name
+  project                               = var.gcp_project
+  global_address_name                   = var.global_address_name
+  health_check_name                     = var.health_check_name
+  health_check_check_interval_sec       = var.health_check_check_interval_sec
+  health_check_healthy_threshold        = var.health_check_healthy_threshold
+  health_check_timeout_sec              = var.health_check_timeout_sec
+  health_check_unhealthy_threshold      = var.health_check_unhealthy_threshold
+  health_check_http_host                = var.health_check_http_host
+  health_check_http_port                = var.health_check_http_port
+  health_check_http_request_path        = var.health_check_http_request_path
+  health_check_log_config_enable        = var.health_check_log_config_enable
+  g_fw_rule_ip_protocol                 = var.g_fw_rule_ip_protocol
+  g_fw_rule_port_range                  = var.g_fw_rule_port_range
+  g_fw_rule_name                        = var.g_fw_rule_name
+  g_fw_rule_load_balancing_scheme       = var.g_fw_rule_load_balancing_scheme
+  target_https_proxy_name               = var.target_https_proxy_name
+  url_map_name                          = var.url_map_name
+  bkend_service_backend_balancing_mode  = var.bkend_service_backend_balancing_mode
+  bkend_service_backend_capacity_scaler = var.bkend_service_backend_capacity_scaler
+  bkend_service_load_balancing_scheme   = var.bkend_service_load_balancing_scheme
+  bkend_service_log_config_enable       = var.bkend_service_log_config_enable
+  bkend_service_log_config_sample_rate  = var.bkend_service_log_config_sample_rate
+  bkend_service_name                    = var.bkend_service_name
+  bkend_service_port_name               = var.bkend_service_port_name
+  bkend_service_protocol                = var.bkend_service_protocol
+  bkend_service_timeout_sec             = var.bkend_service_timeout_sec
+  bkend_service_affinity_cookie_ttl_sec = var.bkend_service_affinity_cookie_ttl_sec
+  bkend_service_session_affinity        = var.bkend_service_session_affinity
+  # # Regional LB and Self managed SSL--------------------------------------------------------------------------
+  # instance_group_manager_instance_group = module.instance_group_manager.instance_group_manager_instance_group
+  # vpc_network_id                        = module.vpc.vpc_network_id
+  # subnet_proxy_only                     = module.vpc.subnet_proxy_only
+  # project_id                            = var.gcp_project
+  # ssl_certificate_id = module.ssl.ssl_certificate_id
+}
+
+module "autoscaler" {
+  source                                = "./autoscaler"
+  instance_group_manager_id             = module.instance_group_manager.instance_group_manager_id
+  reg_autoscaler_region                 = var.reg_autoscaler_region
+  reg_autoscaler_policy_target          = var.reg_autoscaler_policy_target
+  reg_autoscaler_policy_min_replicas    = var.reg_autoscaler_policy_min_replicas
+  reg_autoscaler_policy_max_replicas    = var.reg_autoscaler_policy_max_replicas
+  reg_autoscaler_policy_cooldown_period = var.reg_autoscaler_policy_cooldown_period
+  reg_autoscaler_name                   = var.reg_autoscaler_name
+}
+
+module "ssl" {
+  source                  = "./ssl"
+  project                 = var.gcp_project
+  ssl_certi_name          = var.ssl_certi_name
+  ssl_certi_domain_webapp = var.cloud_function_WEBAPP_DOMAIN_NAME
 }
