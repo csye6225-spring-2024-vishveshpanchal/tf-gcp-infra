@@ -22,7 +22,7 @@ resource "google_compute_region_instance_template" "instance_template_webapp" {
     # disk_name = # When not provided, this defaults to the name of the instance
     # resource_manager_tags = # A set of key/value resource manager tag pairs to bind to this disk
     # labels = # A set of ket/value label pairs to assign to disk created from this template
-    disk_name    = "instance-webapp-disk-${random_integer.get_rand_integer.result}"
+    # disk_name    = "instance-webapp-disk-${random_integer.get_rand_integer.result}"
     auto_delete  = var.instance_template_disk_auto_delete
     boot         = var.instance_template_disk_boot
     mode         = var.instance_template_disk_mode
