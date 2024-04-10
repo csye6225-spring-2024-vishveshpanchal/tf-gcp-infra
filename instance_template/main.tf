@@ -14,6 +14,7 @@ resource "google_compute_region_instance_template" "instance_template_webapp" {
   # tags = concat(tolist(var.vm_tags), tolist(var.allow_health_check_tags))
 
   #   depends_on = [ google_compute_disk.disk ]
+  depends_on = [var.gcp_sa_iam_compute]
 
   disk {
     # auto_delete = # defaults is true
@@ -29,6 +30,9 @@ resource "google_compute_region_instance_template" "instance_template_webapp" {
     disk_type    = var.instance_template_disk_disk_type
     disk_size_gb = var.instance_template_disk_disk_size_gb
     type         = var.instance_template_disk_type
+    disk_encryption_key {
+      kms_key_self_link = var.key_vm_self_link
+    }
   }
   # labels = {
   #   managed-by-cnrm = "true"

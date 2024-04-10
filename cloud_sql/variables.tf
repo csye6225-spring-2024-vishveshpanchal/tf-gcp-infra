@@ -73,3 +73,7 @@ variable "sql_fw_rule_name" {
 variable "sql_compute_address_name" {
   type = string
 }
+
+variable "key_cloud_sql_id" {
+  type = string
+}

@@ -23,6 +23,6 @@ output "vpc_network_id" {
   value = google_compute_network.vpc_network.id
 }
 
-output "subnet_proxy_only" {
-  value = google_compute_subnetwork.proxy_only
-}
+# output "subnet_proxy_only" {
+#   value = google_compute_subnetwork.proxy_only
+# }

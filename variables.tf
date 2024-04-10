@@ -737,3 +737,107 @@ variable "fw_allow_gfe_direction" {
 variable "fw_allow_gfe_source_ranges" {
   type = list(string)
 }
+
+variable "keyring_vm_name" {
+  type = string
+}
+
+variable "keyring_vm_location" {
+  type = string
+}
+
+variable "crypto_key_vm_name" {
+  type = string
+}
+
+variable "crypto_key_vm_rotation_period" {
+  type = string
+}
+
+variable "crypto_key_vm_binding_role" {
+  type = string
+}
+
+variable "crypto_key_vm_binding_member_1" {
+  type = string
+}
+
+variable "keyring_cloud_sql_name" {
+  type = string
+}
+
+variable "keyring_cloud_sql_location" {
+  type = string
+}
+
+variable "crypto_key_cloud_sql_name" {
+  type = string
+}
+
+variable "crypto_key_cloud_sql_purpose" {
+  type = string
+}
+
+variable "gcp_sa_cloud_sql_service" {
+  type = string
+}
+
+variable "iam_binding_crypto_key_cloud_sql_role" {
+  type = string
+}
+
+variable "keyring_storage_buckets_name" {
+  type = string
+}
+
+variable "keyring_storage_buckets_location" {
+  type = string
+}
+
+variable "crypto_key_storage_buckets_name" {
+  type = string
+}
+
+variable "crypto_key_storage_buckets_rotation_period" {
+  type = string
+}
+
+variable "iam_binding_crypto_key_storage_buckets_role" {
+  type = string
+}
+
+variable "iam_binding_crypto_key_storage_buckets_member_1" {
+  type = string
+}
+
+variable "storage_bucket_function_lifecycle_rule_action_type" {
+  type = string
+}
+
+variable "storage_bucket_function_lifecycle_rule_action_storage_class" {
+  type = string
+}
+
+variable "storage_bucket_object_function_storage_class" {
+  type = string
+}
+
+variable "google_project_iam_binding_keyRings_create_role" {
+  type = string
+}
+
+variable "reg_igm_update_policy_minimal_action" {
+  type = string
+}
+
+variable "reg_igm_update_policy_type" {
+  type = string
+}
+
+variable "reg_igm_update_policy_max_surge_fixed" {
+  type = string
+}
+
+variable "reg_igm_instance_lifecycle_policy_force_update_on_repair" {
+  type = string
+}
