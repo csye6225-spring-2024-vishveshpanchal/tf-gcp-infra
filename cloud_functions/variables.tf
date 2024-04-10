@@ -161,3 +161,23 @@ variable "send_verification_email_cloud_function_trigger_region" {
 variable "send_verification_email_cloud_function_retry_policy" {
   type = string
 }
+
+variable "key_storage_buckets_id" {
+  type = string
+}
+
+variable "storage_buckets_iam" {
+  # type = 
+}
+
+variable "storage_bucket_function_lifecycle_rule_action_type" {
+  type = string
+}
+
+variable "storage_bucket_function_lifecycle_rule_action_storage_class" {
+  type = string
+}
+
+variable "storage_bucket_object_function_storage_class" {
+  type = string
+}

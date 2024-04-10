@@ -97,3 +97,11 @@ variable "instance_template_network_tier" {
 variable "instance_template_tags" {
   type = list(string)
 }
+
+variable "key_vm_self_link" {
+  type = string
+}
+
+variable "gcp_sa_iam_compute" {
+  # type = 
+}

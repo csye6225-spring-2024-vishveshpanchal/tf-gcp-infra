@@ -21,3 +21,7 @@ variable "google_project_iam_binding_monitoring_metric_writer_role" {
 variable "google_project_iam_binding_pubsub_publisher" {
   type = string
 }
+
+variable "google_project_iam_binding_keyRings_create_role" {
+  type = string
+}

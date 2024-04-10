@@ -85,60 +85,60 @@ resource "google_compute_firewall" "allow_db" {
 #   source_ranges = [var.subnet_webapp_ip_cidr]
 # }
 
-resource "google_compute_subnetwork" "proxy_only" {
-  name          = var.subnet_proxy_only_name
-  ip_cidr_range = var.subnet_proxy_only_ip_cidr_range
-  network       = google_compute_network.vpc_network.id
-  purpose       = var.subnet_proxy_only_purpose
-  region        = var.subnet_proxy_only_region
-  role          = var.subnet_proxy_only_role
-}
+# resource "google_compute_subnetwork" "proxy_only" {
+#   name          = var.subnet_proxy_only_name
+#   ip_cidr_range = var.subnet_proxy_only_ip_cidr_range
+#   network       = google_compute_network.vpc_network.id
+#   purpose       = var.subnet_proxy_only_purpose
+#   region        = var.subnet_proxy_only_region
+#   role          = var.subnet_proxy_only_role
+# }
 
-resource "google_compute_firewall" "allow_health_probes" {
-  name = var.fw_allow_health_probes_name
-  allow {
-    ports    = var.fw_allow_health_probes_allow_ports
-    protocol = var.fw_allow_health_probes_allow_protocol
-  }
-  # allow {
-  #   ports = ["3000"]
-  #   protocol = "tcp"
-  # }
-  direction     = var.fw_allow_health_probes_direction
-  network       = google_compute_network.vpc_network.id
-  priority      = var.fw_allow_health_probes_priority
-  source_ranges = var.fw_allow_health_probes_source_ranges
-  # target_tags   = ["load-balanced-backend"]
-  target_tags        = var.fw_allow_health_probes_target_tags
-  destination_ranges = [var.subnet_webapp_ip_cidr]
-}
+# resource "google_compute_firewall" "allow_health_probes" {
+#   name = var.fw_allow_health_probes_name
+#   allow {
+#     ports    = var.fw_allow_health_probes_allow_ports
+#     protocol = var.fw_allow_health_probes_allow_protocol
+#   }
+#   # allow {
+#   #   ports = ["3000"]
+#   #   protocol = "tcp"
+#   # }
+#   direction     = var.fw_allow_health_probes_direction
+#   network       = google_compute_network.vpc_network.id
+#   priority      = var.fw_allow_health_probes_priority
+#   source_ranges = var.fw_allow_health_probes_source_ranges
+#   # target_tags   = ["load-balanced-backend"]
+#   target_tags        = var.fw_allow_health_probes_target_tags
+#   destination_ranges = [var.subnet_webapp_ip_cidr]
+# }
 
-resource "google_compute_firewall" "allow_proxy" {
-  name = var.fw_allow_proxy_name
-  # allow {
-  #   ports    = ["443"]
-  #   protocol = "tcp"
-  # }
-  # allow {
-  #   ports    = ["80"]
-  #   protocol = "tcp"
-  # }
-  # allow {
-  #   ports    = ["8080"]
-  #   protocol = "tcp"
-  # }
-  allow {
-    ports    = var.fw_allow_proxy_ports
-    protocol = var.fw_allow_proxy_protocol
-  }
-  direction     = var.fw_allow_proxy_direction
-  network       = google_compute_network.vpc_network.id
-  priority      = var.fw_allow_proxy_allow_priority
-  source_ranges = [google_compute_subnetwork.proxy_only.ip_cidr_range]
-  # target_tags   = ["load-balanced-backend"]
-  target_tags        = var.fw_allow_proxy_target_tags
-  destination_ranges = [var.subnet_webapp_ip_cidr]
-}
+# resource "google_compute_firewall" "allow_proxy" {
+#   name = var.fw_allow_proxy_name
+#   # allow {
+#   #   ports    = ["443"]
+#   #   protocol = "tcp"
+#   # }
+#   # allow {
+#   #   ports    = ["80"]
+#   #   protocol = "tcp"
+#   # }
+#   # allow {
+#   #   ports    = ["8080"]
+#   #   protocol = "tcp"
+#   # }
+#   allow {
+#     ports    = var.fw_allow_proxy_ports
+#     protocol = var.fw_allow_proxy_protocol
+#   }
+#   direction     = var.fw_allow_proxy_direction
+#   network       = google_compute_network.vpc_network.id
+#   priority      = var.fw_allow_proxy_allow_priority
+#   source_ranges = [google_compute_subnetwork.proxy_only.ip_cidr_range]
+#   # target_tags   = ["load-balanced-backend"]
+#   target_tags        = var.fw_allow_proxy_target_tags
+#   destination_ranges = [var.subnet_webapp_ip_cidr]
+# }
 
 resource "google_compute_firewall" "block_ingress" {
   name    = var.block_ingress_firewall

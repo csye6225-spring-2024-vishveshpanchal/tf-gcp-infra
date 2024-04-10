@@ -21,5 +21,14 @@ resource "google_compute_region_instance_group_manager" "instance_group_manager"
     initial_delay_sec = var.reg_igm_autohealing_initial_delay_sec
   }
   # target_size = 2
+  update_policy {
+    minimal_action = var.reg_igm_update_policy_minimal_action
+    type           = var.reg_igm_update_policy_type
+    # instance_redistribution_type = "PROACTIVE" # default is PROACTIVE
+    max_surge_fixed = var.reg_igm_update_policy_max_surge_fixed
+  }
+  instance_lifecycle_policy {
+    force_update_on_repair = var.reg_igm_instance_lifecycle_policy_force_update_on_repair
+  }
 }
 

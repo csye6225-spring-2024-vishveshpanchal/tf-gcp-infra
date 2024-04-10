@@ -121,6 +121,8 @@ module "cloud_sql" {
   sql_address_type              = var.sql_address_type
   sql_fw_rule_name              = var.sql_fw_rule_name
   sql_compute_address_name      = var.sql_compute_address_name
+  key_cloud_sql_id              = module.key_management.key_cloud_sql_id
+  depends_on                    = [module.key_management]
 }
 
 module "dns" {
@@ -141,6 +143,7 @@ module "logging" {
   google_project_iam_binding_logging_admin_role            = var.google_project_iam_binding_logging_admin_role
   google_project_iam_binding_monitoring_metric_writer_role = var.google_project_iam_binding_monitoring_metric_writer_role
   google_project_iam_binding_pubsub_publisher              = var.google_project_iam_binding_pubsub_publisher
+  google_project_iam_binding_keyRings_create_role          = var.google_project_iam_binding_keyRings_create_role
 }
 
 module "pubsub" {
@@ -166,10 +169,13 @@ module "cloud_functions" {
   storage_bucket_function_location                                                    = var.storage_bucket_function_location
   storage_bucket_function_force_destroy                                               = var.storage_bucket_function_force_destroy
   storage_bucket_function_storage_class                                               = var.storage_bucket_function_storage_class
+  storage_bucket_function_lifecycle_rule_action_type                                  = var.storage_bucket_function_lifecycle_rule_action_type
+  storage_bucket_function_lifecycle_rule_action_storage_class                         = var.storage_bucket_function_lifecycle_rule_action_storage_class
   storage_bucket_function_public_access_prevention                                    = var.storage_bucket_function_public_access_prevention
   storage_bucket_function_uniform_bucket_level_access                                 = var.storage_bucket_function_uniform_bucket_level_access
   storage_bucket_object_function_name                                                 = var.storage_bucket_object_function_name
   storage_bucket_object_function_source                                               = var.storage_bucket_object_function_source
+  storage_bucket_object_function_storage_class                                        = var.storage_bucket_object_function_storage_class
   send_verification_email_cloud_function_name                                         = var.send_verification_email_cloud_function_name
   pubsub_topic_verify_email                                                           = module.pubsub.pubsub_topic_verify_email
   webapp_env_DB_USERNAME_PROD                                                         = module.cloud_sql.webapp_env_DB_USERNAME_PROD
@@ -203,6 +209,8 @@ module "cloud_functions" {
   send_verification_email_cloud_function_available_cpu                                = var.send_verification_email_cloud_function_available_cpu
   send_verification_email_cloud_function_trigger_region                               = var.send_verification_email_cloud_function_trigger_region
   send_verification_email_cloud_function_retry_policy                                 = var.send_verification_email_cloud_function_retry_policy
+  key_storage_buckets_id                                                              = module.key_management.key_storage_buckets_id
+  storage_buckets_iam                                                                 = module.key_management.storage_buckets_iam
 }
 
 module "instance_template" {
@@ -232,19 +240,25 @@ module "instance_template" {
   instance_template_disk_type         = var.instance_template_disk_type
   instance_template_network_tier      = var.instance_template_network_tier
   instance_template_tags              = var.subnet_webapp_firewall_target_tags
+  key_vm_self_link                    = module.key_management.key_vm_self_link
+  gcp_sa_iam_compute                  = module.key_management.gcp_sa_iam_compute
 }
 
 module "instance_group_manager" {
-  source                                = "./instance_group_manager"
-  instance_template_webapp_id           = module.instance_template.instance_template_webapp_id
-  health_check_id                       = module.app_load_balancer.health_check_id
-  reg_igm_autohealing_initial_delay_sec = var.reg_igm_autohealing_initial_delay_sec
-  reg_igm_base_instance_name            = var.reg_igm_base_instance_name
-  reg_igm_name                          = var.reg_igm_name
-  reg_igm_named_port_name               = var.reg_igm_named_port_name
-  reg_igm_named_port_port               = var.reg_igm_named_port_port
-  reg_igm_region                        = var.reg_igm_region
-  reg_igm_version_name                  = var.reg_igm_version_name
+  source                                                   = "./instance_group_manager"
+  instance_template_webapp_id                              = module.instance_template.instance_template_webapp_id
+  health_check_id                                          = module.app_load_balancer.health_check_id
+  reg_igm_autohealing_initial_delay_sec                    = var.reg_igm_autohealing_initial_delay_sec
+  reg_igm_base_instance_name                               = var.reg_igm_base_instance_name
+  reg_igm_name                                             = var.reg_igm_name
+  reg_igm_named_port_name                                  = var.reg_igm_named_port_name
+  reg_igm_named_port_port                                  = var.reg_igm_named_port_port
+  reg_igm_region                                           = var.reg_igm_region
+  reg_igm_version_name                                     = var.reg_igm_version_name
+  reg_igm_update_policy_minimal_action                     = var.reg_igm_update_policy_minimal_action
+  reg_igm_update_policy_type                               = var.reg_igm_update_policy_type
+  reg_igm_update_policy_max_surge_fixed                    = var.reg_igm_update_policy_max_surge_fixed
+  reg_igm_instance_lifecycle_policy_force_update_on_repair = var.reg_igm_instance_lifecycle_policy_force_update_on_repair
 }
 
 module "app_load_balancer" {
@@ -304,4 +318,29 @@ module "ssl" {
   project                 = var.gcp_project
   ssl_certi_name          = var.ssl_certi_name
   ssl_certi_domain_webapp = var.cloud_function_WEBAPP_DOMAIN_NAME
+}
+
+module "key_management" {
+  source                                          = "./key_management"
+  service_account_email                           = module.logging.service_account_email
+  keyring_vm_name                                 = var.keyring_vm_name
+  keyring_vm_location                             = var.keyring_vm_location
+  crypto_key_vm_name                              = var.crypto_key_vm_name
+  crypto_key_vm_rotation_period                   = var.crypto_key_vm_rotation_period
+  crypto_key_vm_binding_role                      = var.crypto_key_vm_binding_role
+  crypto_key_vm_binding_member_1                  = var.crypto_key_vm_binding_member_1
+  keyring_cloud_sql_name                          = var.keyring_cloud_sql_name
+  keyring_cloud_sql_location                      = var.keyring_cloud_sql_location
+  crypto_key_cloud_sql_name                       = var.crypto_key_cloud_sql_name
+  crypto_key_cloud_sql_purpose                    = var.crypto_key_cloud_sql_purpose
+  gcp_sa_cloud_sql_service                        = var.gcp_sa_cloud_sql_service
+  iam_binding_crypto_key_cloud_sql_role           = var.iam_binding_crypto_key_cloud_sql_role
+  keyring_storage_buckets_name                    = var.keyring_storage_buckets_name
+  keyring_storage_buckets_location                = var.keyring_storage_buckets_location
+  crypto_key_storage_buckets_name                 = var.crypto_key_storage_buckets_name
+  crypto_key_storage_buckets_rotation_period      = var.crypto_key_storage_buckets_rotation_period
+  iam_binding_crypto_key_storage_buckets_role     = var.iam_binding_crypto_key_storage_buckets_role
+  iam_binding_crypto_key_storage_buckets_member_1 = var.iam_binding_crypto_key_storage_buckets_member_1
+  keyring_cloud_sql_project                       = var.gcp_project
+  gcp_sa_cloud_sql_project                        = var.gcp_project
 }

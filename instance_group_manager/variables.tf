@@ -33,3 +33,19 @@ variable "reg_igm_base_instance_name" {
 variable "reg_igm_autohealing_initial_delay_sec" {
   type = string
 }
+
+variable "reg_igm_update_policy_minimal_action" {
+  type = string
+}
+
+variable "reg_igm_update_policy_type" {
+  type = string
+}
+
+variable "reg_igm_update_policy_max_surge_fixed" {
+  type = string
+}
+
+variable "reg_igm_instance_lifecycle_policy_force_update_on_repair" {
+  type = string
+}

@@ -6,7 +6,8 @@ resource "random_password" "password_generate" {
 
 resource "google_sql_database_instance" "sql_db_instance" {
 
-  database_version = var.sql_db_version
+  database_version    = var.sql_db_version
+  encryption_key_name = var.key_cloud_sql_id
   settings {
     tier              = var.sql_tier
     availability_type = var.sql_availability_type
@@ -55,12 +56,14 @@ resource "google_compute_forwarding_rule" "default" {
 }
 
 resource "google_sql_database" "sql_database" {
-  name     = var.sql_database_name
-  instance = google_sql_database_instance.sql_db_instance.name
+  name       = var.sql_database_name
+  instance   = google_sql_database_instance.sql_db_instance.name
+  depends_on = [google_sql_database_instance.sql_db_instance]
 }
 
 resource "google_sql_user" "sql_users" {
-  name     = var.sql_username
-  instance = google_sql_database_instance.sql_db_instance.name
-  password = random_password.password_generate.result
+  name       = var.sql_username
+  instance   = google_sql_database_instance.sql_db_instance.name
+  password   = random_password.password_generate.result
+  depends_on = [google_sql_database_instance.sql_db_instance]
 }

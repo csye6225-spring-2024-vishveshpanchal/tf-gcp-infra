@@ -15,8 +15,47 @@
 #   depends_on = [google_storage_bucket.storage_bucket_function]
 # }
 
-data "google_storage_bucket" "my-bucket" {
-  name = var.storage_bucket_function_name
+# data "google_storage_bucket" "my-bucket" {
+#   name = var.storage_bucket_function_name
+# }
+resource "google_storage_bucket" "my_updated_bucket" {
+  # name     = data.google_storage_bucket.my-bucket.name
+  name = "${var.storage_bucket_function_name}-1"
+  # location = data.google_storage_bucket.my-bucket.location
+  location = var.storage_bucket_function_location
+  # project  = data.google_storage_bucket.my-bucket.project
+  force_destroy = var.storage_bucket_function_force_destroy
+  storage_class = var.storage_bucket_function_storage_class # REGIONAL
+  lifecycle_rule {
+    action {
+      type          = var.storage_bucket_function_lifecycle_rule_action_type
+      storage_class = var.storage_bucket_function_lifecycle_rule_action_storage_class # REGIONAL
+    }
+    condition {
+
+    }
+  }
+  soft_delete_policy {
+    retention_duration_seconds = 0
+  }
+  # Apply encryption using default KMS key
+  encryption {
+    default_kms_key_name = var.key_storage_buckets_id
+  }
+  public_access_prevention = var.storage_bucket_function_public_access_prevention
+  depends_on               = [var.storage_buckets_iam]
+}
+
+resource "google_storage_bucket_object" "storage_bucket_object_function" {
+  name          = var.storage_bucket_object_function_name
+  source        = var.storage_bucket_object_function_source
+  bucket        = google_storage_bucket.my_updated_bucket.name
+  storage_class = var.storage_bucket_object_function_storage_class
+  # kms_key_name = 
+  # customer_encryption {
+  #   encryption_key = 
+  # }
+  depends_on = [google_storage_bucket.my_updated_bucket]
 }
 
 resource "google_service_account" "send_verification_email_cloud_function_google_service_account_account" {
@@ -56,7 +95,8 @@ resource "google_cloudfunctions2_function" "send_verification_email_cloud_functi
 
     source {
       storage_source {
-        bucket = data.google_storage_bucket.my-bucket.name
+        # bucket = data.google_storage_bucket.my-bucket.name
+        bucket = google_storage_bucket.my_updated_bucket.name
         object = var.storage_bucket_object_function_name
         # bucket = google_storage_bucket.storage_bucket_function.name
         # object = google_storage_bucket_object.storage_bucket_object_function.name
